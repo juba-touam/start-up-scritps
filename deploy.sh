@@ -109,10 +109,10 @@ case "$1" in
    *)
        if [[ "$HOSTNAME" == *"front"* ]]; then
            echo "VM frontend détectée — démarrage du frontend uniquement..."
-           docker compose -f docker-compose.frontend.yml up -d
+           docker compose -f docker-compose.front.yml up -d
        else
            echo "VM backend détectée — démarrage des services backend uniquement..."
-           docker compose -f docker-compose.backend.yml up -d
+           docker compose -f docker-compose.back.yml up -d
        fi
        ;;
 
