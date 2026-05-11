@@ -1,0 +1,61 @@
+services:
+  # ── Backend services ──────────────────────────────────────────
+  catalogue-service:
+    image: ${CATALOGUE_IMAGE}:${CATALOGUE_TAG}
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: ${CATALOGUE_PORT:-4000}
+      NODE_ENV: ${CATALOGUE_NODE_ENV}
+      DB_HOST: ${CATALOGUE_DB_HOST}
+      DB_PORT: ${CATALOGUE_DB_PORT:-5432}
+      DB_NAME: ${CATALOGUE_DB_NAME}
+      DB_USER: ${CATALOGUE_DB_USER}
+      DB_PASSWORD: ${CATALOGUE_DB_PASSWORD}
+      DB_SSL: ${DB_SSL:-true}
+      PGSSLMODE: ${PGSSLMODE:-require}
+
+    restart: always
+    networks:
+      - backend
+
+
+  order-service:
+    image: ${ORDER_IMAGE}:${ORDER_TAG}
+    ports:
+      - "8000:8000"    
+    command: >
+      sh -c "python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+    environment:
+      DJANGO_SECRET_KEY: ${ORDER_DJANGO_SECRET_KEY:-prod-secret-key-change-me}
+      DJANGO_SETTINGS_MODULE: ${ORDER_DJANGO_SETTINGS_MODULE:-config.settings.prod}
+      DJANGO_ALLOWED_HOSTS: "*"
+      POSTGRES_DB: ${ORDER_POSTGRES_DB}
+      POSTGRES_USER: ${ORDER_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${ORDER_POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${ORDER_POSTGRES_HOST}
+      POSTGRES_PORT: ${ORDER_POSTGRES_PORT:-5432}
+      POSTGRES_SSLMODE: ${POSTGRES_SSLMODE:-require}
+
+    restart: always
+    networks:
+      - backend
+
+  payment-service:
+    image: ${PAYMENT_IMAGE}:${PAYMENT_TAG}
+    ports:
+      - "8082:8082"    
+    environment:
+      SPRING_DATASOURCE_URL: ${PAYMENT_SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${PAYMENT_SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${PAYMENT_SPRING_DATASOURCE_PASSWORD}
+
+    restart: always
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+

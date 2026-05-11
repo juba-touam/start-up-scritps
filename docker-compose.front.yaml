@@ -1,0 +1,35 @@
+services:
+
+  # ── Reverse Proxy ────────────────────────────────────────────
+
+
+  nginx-proxy:
+    image: docker.io/nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx-proxy.conf:/etc/nginx/conf.d/default.conf:Z
+    depends_on:
+      - frontend
+    restart: always
+    networks:
+      - front
+
+
+  # ── Frontend ──────────────────────────────────────────────────
+
+  frontend:
+    image: ${FRONTEND_IMAGE}:${FRONTEND_TAG}
+    environment:
+      CATALOG: $FRONTEND_CATALOG
+      ORDERS: $FRONTEND_ORDERS
+      PAYMENT: $FRONTEND_PAYMENT
+    restart: always
+    networks:
+      - front
+
+networks:
+  front:
+    driver: bridge
+
+
