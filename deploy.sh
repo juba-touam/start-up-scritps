@@ -81,9 +81,9 @@ fi
 
 # ── Sélection des services à démarrer ────────────────────────
 
-BACKEND_SERVICES="catalogue-db orders-db payment-db catalogue-service order-service payment-service"
+#BACKEND_SERVICES="catalogue-db orders-db payment-db catalogue-service order-service payment-service"
 
-FRONTEND_SERVICES="frontend nginx-proxy"
+#FRONTEND_SERVICES="frontend nginx-proxy"
 
 
 ACR_NAME="crformation"
@@ -109,10 +109,10 @@ case "$1" in
    *)
        if [[ "$HOSTNAME" == *"front"* ]]; then
            echo "VM frontend détectée — démarrage du frontend uniquement..."
-           docker compose up -d $FRONTEND_SERVICES
+           docker compose -f docker-compose.frontend.yml up -d
        else
            echo "VM backend détectée — démarrage des services backend uniquement..."
-           docker compose up -d $BACKEND_SERVICES
+           docker compose -f docker-compose.backend.yml up -d
        fi
        ;;
 
