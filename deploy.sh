@@ -89,13 +89,21 @@ fi
 ACR_NAME="crformation"
 
 # 1. Token AAD depuis IMDS
-ACCESS_TOKEN=$(curl -s -H "Metadata: true" \ "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fmanagement.azure.com%2F" \   | jq -r .access_token)
+ACCESS_TOKEN=$(curl -s -H "Metadata: true" \
+  "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fmanagement.azure.com%2F" \
+  | jq -r .access_token)
 
 # 2. Échange contre refresh token ACR
-ACR_TOKEN=$(curl -s -X POST \ -H "Content-Type: application/x-www-form-urlencoded" \   -d "grant_type=access_token&service=${ACR_NAME}.azurecr.io&access_token=${ACCESS_TOKEN}" \     "https://${ACR_NAME}.azurecr.io/oauth2/exchange" \       | jq -r .refresh_token)
+ACR_TOKEN=$(curl -s -X POST \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=access_token&service=${ACR_NAME}.azurecr.io&access_token=${ACCESS_TOKEN}" \
+  "https://${ACR_NAME}.azurecr.io/oauth2/exchange" \
+  | jq -r .refresh_token)
 
 # 3. Login Docker (le username 00...00 est une convention ACR)
-echo $ACR_TOKEN | docker login ${ACR_NAME}.azurecr.io \ --username 00000000-0000-0000-0000-000000000000 \   --password-stdin
+echo "$ACR_TOKEN" | docker login "${ACR_NAME}.azurecr.io" \
+  --username 00000000-0000-0000-0000-000000000000 \
+  --password-stdin
 
 
 
