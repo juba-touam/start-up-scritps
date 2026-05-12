@@ -1,14 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-# Attendre que apt soit disponible
-while fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do sleep 5; done
-
-# Paquets de base
 apt-get update
 apt-get install -y ca-certificates curl gnupg lsb-release
-
-# Installer Docker
 install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /tmp/docker.asc
 cat /tmp/docker.asc | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
