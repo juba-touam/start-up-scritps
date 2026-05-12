@@ -119,7 +119,7 @@ case "$1" in
            echo "VM frontend détectée — démarrage du frontend uniquement..."
            docker compose -f docker-compose.front.yaml up -d
        else
-           echo "VM backend détectée — démarrage des services backend uniquement..."
+           echo "VM backend détectée — démarrage des services backend uniquement.."
            docker compose -f docker-compose.back.yaml up -d
        fi
        ;;
