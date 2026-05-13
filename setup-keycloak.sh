@@ -22,8 +22,8 @@ echo "[2/4] Creating Keycloak directories..."
 mkdir -p "$KEYCLOAK_DIR"
 
 # 3. Download docker-compose.yml from GitHub
-echo "[3/4] Downloading docker-compose.yml..."
-curl -fsSL "$SCRIPT_URL/docker-compose.keycloak.yaml" -o "$KEYCLOAK_DIR/docker-compose.yml"
+echo "[3/4] Downloading docker-compose.yaml..."
+curl -fsSL "$SCRIPT_URL/docker-compose.keycloak.yaml" -o "$KEYCLOAK_DIR/docker-compose.keycloak.yaml"
 
 # 4. Generate self-signed SSL certificates
 echo "[4/4] Generating SSL certificates..."
