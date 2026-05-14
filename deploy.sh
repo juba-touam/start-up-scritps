@@ -40,9 +40,9 @@ if [[ "$HOSTNAME" == *"dev"* ]]; then
    elif [[ "$HOSTNAME" == *"front"* ]]; then
        export FRONTEND_IMAGE=crformation.azurecr.io/ecommerce-front
        export FRONTEND_TAG=3.0
-       export FRONTEND_CATALOG=http://20.43.59.226/api/products
-       export FRONTEND_ORDERS=http://20.43.59.226/api/orders
-       export FRONTEND_PAYMENT=http://20.43.59.226/api/payments
+       export FRONTEND_CATALOG=https://51.103.60.56/api/products
+       export FRONTEND_ORDERS=https://51.103.60.56/api/orders
+       export FRONTEND_PAYMENT=https://51.103.60.56/api/payments
    fi
 
 

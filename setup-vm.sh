@@ -15,7 +15,7 @@ systemctl start docker
 usermod -aG docker azureuser
 
 # Récupérer les fichiers depuis GitHub
-for FILE in create-service.sh deploy.sh docker-compose.back.yaml docker-compose.front.yaml nginx-proxy.conf; do
+for FILE in create-service.sh deploy.sh docker-compose.back.yaml docker-compose.front.yaml; do
   curl -sL "https://raw.githubusercontent.com/juba-touam/start-up-scritps/main/$FILE" -o "/home/azureuser/$FILE"
 done
 chmod +x /home/azureuser/*.sh
