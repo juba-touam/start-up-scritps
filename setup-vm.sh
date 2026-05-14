@@ -2,7 +2,7 @@
 set -euo pipefail
 
 apt-get update
-apt-get install -y ca-certificates curl gnupg lsb-release
+apt-get install -y ca-certificates curl gnupg lsb-release jq
 install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /tmp/docker.asc
 cat /tmp/docker.asc | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
