@@ -21,9 +21,14 @@ systemctl enable --now docker
 echo "[2/4] Creating Keycloak directories..."
 mkdir -p "$KEYCLOAK_DIR"
 
+
 # 3. Download docker-compose.yml from GitHub
 echo "[3/4] Downloading docker-compose.yaml..."
 curl -fsSL "$SCRIPT_URL/docker-compose.keycloak.yaml" -o "$KEYCLOAK_DIR/docker-compose.keycloak.yaml"
+if [ ! -f "$KEYCLOAK_DIR/docker-compose.keycloak.yaml" ]; then
+  echo "✗ Failed to download docker-compose.keycloak.yaml"
+  exit 1
+fi
 
 # 4. Generate self-signed SSL certificates
 echo "[4/4] Generating SSL certificates..."
@@ -35,7 +40,7 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 # 5. Start containers
 echo "Starting Docker containers..."
 cd "$KEYCLOAK_DIR"
-docker compose up -d
+docker compose -f docker-compose.keycloak.yaml up -d
 
 # Wait for Keycloak ready
 echo "Waiting for Keycloak to be ready (max 120 seconds)..."
