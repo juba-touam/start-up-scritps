@@ -8,7 +8,7 @@ if [[ "$HOSTNAME" == *"dev"* ]]; then
 
    if [[ "$HOSTNAME" == *"back"* ]]; then
        export CATALOGUE_IMAGE=crformation.azurecr.io/ecommerce-catalogue
-       export CATALOGUE_TAG=1.0
+       export CATALOGUE_TAG=2.0
        export CATALOGUE_PORT=4000
        export CATALOGUE_NODE_ENV=production
        export CATALOGUE_DB_HOST=data-pgsql-dev.postgres.database.azure.com
@@ -20,7 +20,7 @@ if [[ "$HOSTNAME" == *"dev"* ]]; then
        export PGSSLMODE=require
 
        export ORDER_IMAGE=crformation.azurecr.io/ecommerce-order
-       export ORDER_TAG=1.0
+       export ORDER_TAG=2.0
        export ORDER_DJANGO_SECRET_KEY=prod-secret-key-change-me
        export ORDER_DJANGO_SETTINGS_MODULE=config.settings.prod
        export ORDER_POSTGRES_DB=order
@@ -31,7 +31,7 @@ if [[ "$HOSTNAME" == *"dev"* ]]; then
        export POSTGRES_SSLMODE=require
 
        export PAYMENT_IMAGE=crformation.azurecr.io/ecommerce-payment
-       export PAYMENT_TAG=1.0
+       export PAYMENT_TAG=2.0
        # shellcheck disable=SC2125
        export PAYMENT_SPRING_DATASOURCE_URL=jdbc:postgresql://data-pgsql-dev.postgres.database.azure.com:5432/payment?sslmode=require
        export PAYMENT_SPRING_DATASOURCE_USERNAME=formation
@@ -42,7 +42,7 @@ if [[ "$HOSTNAME" == *"dev"* ]]; then
 
    elif [[ "$HOSTNAME" == *"front"* ]]; then
        export FRONTEND_IMAGE=crformation.azurecr.io/ecommerce-front
-       export FRONTEND_TAG=3.0
+       export FRONTEND_TAG=4.0
        export FRONTEND_CATALOG=https://ecom-apim-formation.developer.azure-api.net/api/products
        export FRONTEND_ORDERS=https://ecom-apim-formation.developer.azure-api.net/api/orders
        export FRONTEND_PAYMENT=https://ecom-apim-formation.developer.azure-api.net/api/payments
