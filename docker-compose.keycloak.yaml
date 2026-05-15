@@ -25,17 +25,26 @@ services:
       KC_DB_DATABASE: keycloak
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: adminpass
-    command: start --http-port=8080
+      KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/conf/tls.crt
+      KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/conf/tls.key
+      KC_HOSTNAME_STRICT: "false"
+      KC_HTTP_ENABLED: "false"
+    command: start
+    volumes:
+      - /opt/keycloak/tls.crt:/opt/keycloak/conf/tls.crt:ro
+      - /opt/keycloak/tls.key:/opt/keycloak/conf/tls.key:ro
+    ports:
+      - "8443:8443"
     depends_on:
       postgres:
         condition: service_healthy
     networks:
       - keycloaknet
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      test: ["CMD", "curl", "-sk", "https://localhost:8443/health"]
       interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 5
 
 volumes:
   pgdata:
