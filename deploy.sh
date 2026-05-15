@@ -37,12 +37,15 @@ if [[ "$HOSTNAME" == *"dev"* ]]; then
        export PAYMENT_SPRING_DATASOURCE_USERNAME=formation
        export PAYMENT_SPRING_DATASOURCE_PASSWORD=test
 
+       # Application Insights
+       export APPLICATIONINSIGHTS_CONNECTION_STRING="InstrumentationKey=1311ad53-6ac0-4946-bb2f-48c60120bbd9;IngestionEndpoint=https://francecentral-1.in.applicationinsights.azure.com/;LiveEndpoint=https://francecentral.livediagnostics.monitor.azure.com/;ApplicationId=d9efc03e-0523-42cc-9e0e-1ea237ed1ba4"
+
    elif [[ "$HOSTNAME" == *"front"* ]]; then
        export FRONTEND_IMAGE=crformation.azurecr.io/ecommerce-front
        export FRONTEND_TAG=3.0
-       export FRONTEND_CATALOG=https://51.103.60.56/api/products
-       export FRONTEND_ORDERS=https://51.103.60.56/api/orders
-       export FRONTEND_PAYMENT=https://51.103.60.56/api/payments
+       export FRONTEND_CATALOG=https://ecom-apim-formation.developer.azure-api.net/api/products
+       export FRONTEND_ORDERS=https://ecom-apim-formation.developer.azure-api.net/api/orders
+       export FRONTEND_PAYMENT=https://ecom-apim-formation.developer.azure-api.net/api/payments
    fi
 
 
