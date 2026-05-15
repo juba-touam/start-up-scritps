@@ -21,7 +21,6 @@ die() { echo "[$(date -u +%H:%M:%S)] ✗ $*" >&2; exit 1; }
 # =============================================================================
 log "[1/6] Installing Docker..."
 
-# cloud-init already ran apt-get update, but docker needs its own repo
 DEBIAN_FRONTEND=noninteractive apt-get install -y -qq ca-certificates curl gnupg
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
@@ -38,7 +37,11 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
   || die "Docker install failed"
 
 systemctl enable --now docker
-sleep 2  # let the daemon settle before compose calls
+
+# Wait for Docker daemon to be ready instead of fixed sleep
+log "Waiting for Docker daemon..."
+timeout 30 bash -c 'until docker info &>/dev/null; do sleep 1; done' \
+  || die "Docker daemon did not start in time"
 
 # =============================================================================
 # 2 — Directory
@@ -89,8 +92,9 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   || { rm -f "$cnf"; die "openssl failed"; }
 
 rm -f "$cnf"
-chmod 0644 tls.crt
-chmod 0600 tls.key
+
+# 0644 so the Keycloak container (non-root uid 1000) can read both files
+chmod 0644 tls.crt tls.key
 
 # =============================================================================
 # 5 — Start containers
