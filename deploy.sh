@@ -43,9 +43,9 @@ if [[ "$HOSTNAME" == *"dev"* ]]; then
    elif [[ "$HOSTNAME" == *"front"* ]]; then
        export FRONTEND_IMAGE=crformation.azurecr.io/ecommerce-front
        export FRONTEND_TAG=4.0
-       export FRONTEND_CATALOG=https://ecom-apim-formation.developer.azure-api.net/api/products
-       export FRONTEND_ORDERS=https://ecom-apim-formation.developer.azure-api.net/api/orders
-       export FRONTEND_PAYMENT=https://ecom-apim-formation.developer.azure-api.net/api/payments
+       export FRONTEND_CATALOG=https://ecom-apim-formation.azure-api.net/api/products
+       export FRONTEND_ORDERS=https://ecom-apim-formation.azure-api.net/api/orders
+       export FRONTEND_PAYMENT=https://ecom-apim-formation.azure-api.net/api/payments
    fi
 
 
