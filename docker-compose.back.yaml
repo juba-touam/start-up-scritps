@@ -26,7 +26,7 @@ services:
     ports:
       - "8000:8000"    
     command: >
-      sh -c "python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+      sh -c "python manage.py migrate && gunicorn config.wsgi:application --config config/gunicorn.py --bind 0.0.0.0:8000"
     environment:
       DJANGO_SECRET_KEY: ${ORDER_DJANGO_SECRET_KEY:-prod-secret-key-change-me}
       DJANGO_SETTINGS_MODULE: ${ORDER_DJANGO_SETTINGS_MODULE:-config.settings.prod}
