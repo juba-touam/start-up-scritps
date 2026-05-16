@@ -53,10 +53,10 @@ else
       "publicClient": true,
       "directAccessGrantsEnabled": true,
       "standardFlowEnabled": true,
-      "rootUrl": "http://20.43.59.226",
+      "rootUrl": "https://20.43.59.226",
       "baseUrl": "/",
-      "redirectUris": ["http://20.43.59.226/*"],
-      "webOrigins": ["http://20.43.59.226"],
+      "redirectUris": ["https://20.43.59.226/*"],
+      "webOrigins": ["https://20.43.59.226"],
       "protocol": "openid-connect"
     }' -o /dev/null \
     && log "✓ client 'ecom-frontend' created" || die "Failed to create client"
