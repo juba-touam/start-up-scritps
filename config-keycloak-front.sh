@@ -49,10 +49,7 @@ else
       "baseUrl": "/",
       "redirectUris": ["http://20.43.59.226/*"],
       "webOrigins": ["http://20.43.59.226"],
-      "protocol": "openid-connect",
-      "attributes": {
-        "pkce.code.challenge.method": "S256"
-      }
+      "protocol": "openid-connect"
     }' -o /dev/null \
     && log "✓ client 'ecom-frontend' created" || die "Failed to create client"
 fi
