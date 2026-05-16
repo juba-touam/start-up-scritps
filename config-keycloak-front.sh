@@ -7,6 +7,7 @@ set -Eeuo pipefail
 trap 'echo "[ERROR] line ${LINENO} exited with $?" >&2' ERR
 
 KC_BASE_URL="https://127.0.0.1:8443"
+KC_HOSTNAME="ecom-apim-formation.azure-api.net"
 KC_ADMIN_USER="${KC_ADMIN_USER:-admin}"
 KC_ADMIN_PASS="${KC_ADMIN_PASS:-adminpass}"
 
@@ -54,11 +55,11 @@ else
     && log "✓ client 'ecom-frontend' created" || die "Failed to create client"
 fi
 
-# --- Enable user self-registration on realm 'user' ---
-log "Enabling self-registration on realm 'user'..."
+# --- Configure realm frontend URL and enable self-registration ---
+log "Configuring realm 'user' (frontendUrl + registration)..."
 curl "${auth[@]}" -X PUT "$KC_BASE_URL/admin/realms/user" \
   -H "Content-Type: application/json" \
-  -d '{"registrationAllowed": true}' -o /dev/null \
-  && log "✓ self-registration enabled" || die "Failed to enable registration"
+  -d "{\"registrationAllowed\": true, \"attributes\": {\"frontendUrl\": \"https://$KC_HOSTNAME/keycloak\"}}" -o /dev/null \
+  && log "✓ realm configured (frontendUrl=$KC_HOSTNAME, registration=enabled)" || die "Failed to configure realm"
 
 log "Done."
