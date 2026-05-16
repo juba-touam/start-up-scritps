@@ -128,8 +128,12 @@ case "$1" in
            CERT_DIR="/opt/certs"
            mkdir -p "$CERT_DIR"
 
+           KV_CLIENT_ID=$(curl -s -H "Metadata: true" \
+             "http://169.254.169.254/metadata/instance/compute/tagsList?api-version=2021-02-01" \
+             | jq -r '.[] | select(.name=="kv_identity_client_id") | .value')
+
            KV_TOKEN=$(curl -s -H "Metadata: true" \
-             "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net" \
+             "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net&client_id=${KV_CLIENT_ID}" \
              | jq -r .access_token)
 
            PEM_BUNDLE=$(curl -s -H "Authorization: Bearer ${KV_TOKEN}" \
