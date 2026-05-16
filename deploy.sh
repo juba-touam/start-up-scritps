@@ -122,6 +122,25 @@ case "$1" in
        ;;
    *)
        if [[ "$HOSTNAME" == *"front"* ]]; then
+           # Récupération du certificat TLS depuis Key Vault via IMDS
+           VAULT_NAME="kv-formation-security"
+           CERT_NAME="front-tls"
+           CERT_DIR="/opt/certs"
+           mkdir -p "$CERT_DIR"
+
+           KV_TOKEN=$(curl -s -H "Metadata: true" \
+             "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net" \
+             | jq -r .access_token)
+
+           PEM_BUNDLE=$(curl -s -H "Authorization: Bearer ${KV_TOKEN}" \
+             "https://${VAULT_NAME}.vault.azure.net/secrets/${CERT_NAME}?api-version=7.4" \
+             | jq -r .value)
+
+           echo "$PEM_BUNDLE" | openssl pkey -out "$CERT_DIR/tls.key" 2>/dev/null
+           echo "$PEM_BUNDLE" | openssl x509 -out "$CERT_DIR/tls.crt" 2>/dev/null
+           chmod 600 "$CERT_DIR/tls.key"
+           echo "Certificat TLS récupéré depuis Key Vault."
+
            echo "VM frontend détectée — démarrage du frontend uniquement..."
            docker compose -f docker-compose.front.yaml up -d
        else
