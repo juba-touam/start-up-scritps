@@ -43,12 +43,18 @@ if [[ "$client_exists" -gt 0 ]]; then
   curl "${auth[@]}" -X PUT "$KC_BASE_URL/admin/realms/user/clients/$client_uuid" \
     -H "Content-Type: application/json" \
     -d '{
+      "clientId": "ecom-frontend",                                                                                                                                                                   
+      "enabled": true,                                                                                                                                                                          
+      "publicClient": true,                                                                                                                                                                     
+      "directAccessGrantsEnabled": true,                                                                                                                                                        
+      "standardFlowEnabled": true, 
       "rootUrl": "https://20.43.59.226",
       "baseUrl": "/",
       "redirectUris": ["https://20.43.59.226/*"],
       "webOrigins": ["https://20.43.59.226"],
+      "protocol": "openid-connect", 
       "attributes": {"pkce.code.challenge.method": ""}
-    }' -o /dev/null \
+    }' \
     && log "✓ URLs updated + PKCE disabled on 'ecom-frontend'" || die "Failed to update client"
 else
   curl "${auth[@]}" -X POST "$KC_BASE_URL/admin/realms/user/clients" \
