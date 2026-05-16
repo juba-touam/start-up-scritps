@@ -6,6 +6,9 @@ services:
       CATALOG: $FRONTEND_CATALOG
       ORDERS: $FRONTEND_ORDERS
       PAYMENT: $FRONTEND_PAYMENT
+      KEYCLOAK_URL: $FRONTEND_KEYCLOAK_URL
+      KEYCLOAK_REALM: $FRONTEND_KEYCLOAK_REALM
+      KEYCLOAK_CLIENT_ID: $FRONTEND_KEYCLOAK_CLIENT_ID
     restart: always
     ports:
       - "80:80"
@@ -15,5 +18,3 @@ services:
 networks:
   front:
     driver: bridge
-
-
