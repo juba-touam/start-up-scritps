@@ -171,4 +171,36 @@ else
     && log "✓ user 'platform-admin' created" || die "Failed to set user password"
 fi
 
+# =============================================================================
+# OAuth2 Client for Frontend (public SPA)
+# =============================================================================
+log "Creating OAuth2 client 'ecom-frontend'..."
+
+client_exists=$(curl "${auth[@]}" \
+  "$KC_BASE_URL/admin/realms/user/clients?clientId=ecom-frontend" \
+  | jq 'length')
+
+if [[ "$client_exists" -gt 0 ]]; then
+  log "✓ client 'ecom-frontend' already exists"
+else
+  curl "${auth[@]}" -X POST "$KC_BASE_URL/admin/realms/user/clients" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "clientId": "ecom-frontend",
+      "enabled": true,
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "rootUrl": "http://20.43.59.226",
+      "baseUrl": "/",
+      "redirectUris": ["http://20.43.59.226/*"],
+      "webOrigins": ["http://20.43.59.226"],
+      "protocol": "openid-connect",
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      }
+    }' -o /dev/null \
+    && log "✓ client 'ecom-frontend' created" || die "Failed to create client"
+fi
+
 log "=== Setup complete: $KC_BASE_URL ==="
