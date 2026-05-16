@@ -54,4 +54,11 @@ else
     && log "✓ client 'ecom-frontend' created" || die "Failed to create client"
 fi
 
+# --- Enable user self-registration on realm 'user' ---
+log "Enabling self-registration on realm 'user'..."
+curl "${auth[@]}" -X PUT "$KC_BASE_URL/admin/realms/user" \
+  -H "Content-Type: application/json" \
+  -d '{"registrationAllowed": true}' -o /dev/null \
+  && log "✓ self-registration enabled" || die "Failed to enable registration"
+
 log "Done."
