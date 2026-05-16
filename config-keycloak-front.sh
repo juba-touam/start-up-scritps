@@ -36,7 +36,14 @@ client_exists=$(curl "${auth[@]}" \
   | jq 'length')
 
 if [[ "$client_exists" -gt 0 ]]; then
-  log "✓ client 'ecom-frontend' already exists"
+  log "Client 'ecom-frontend' exists — disabling PKCE..."
+  client_uuid=$(curl "${auth[@]}" \
+    "$KC_BASE_URL/admin/realms/user/clients?clientId=ecom-frontend" \
+    | jq -r '.[0].id')
+  curl "${auth[@]}" -X PUT "$KC_BASE_URL/admin/realms/user/clients/$client_uuid" \
+    -H "Content-Type: application/json" \
+    -d '{"attributes": {"pkce.code.challenge.method": ""}}' -o /dev/null \
+    && log "✓ PKCE disabled on 'ecom-frontend'" || die "Failed to update client"
 else
   curl "${auth[@]}" -X POST "$KC_BASE_URL/admin/realms/user/clients" \
     -H "Content-Type: application/json" \
